@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const supabase = require('./supabase');
+const authRouter = require('./routes/auth');
 
 app.use(express.json());
+app.use('/auth', authRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
