@@ -1,20 +1,207 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+const s = {
+    page: { display: 'flex', minHeight: '100vh', background: '#fdf8f2' },
+    sidebar: { width: '220px', background: '#1a2744', minHeight: '100vh', padding: '28px 20px', display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: 0, height: '100%' },
+    logoRow: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '36px' },
+    logoIcon: { width: '34px', height: '34px', background: '#b85c38', borderRadius: '8px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px', padding: '7px' },
+    sq1: { borderRadius: '2px', background: 'rgba(255,255,255,0.95)' },
+    sq2: { borderRadius: '2px', background: 'rgba(255,255,255,0.72)' },
+    sq3: { borderRadius: '2px', background: 'rgba(255,255,255,0.55)' },
+    sq4: { borderRadius: '2px', background: 'rgba(255,255,255,0.38)' },
+    wordmark: { fontSize: '17px', fontWeight: '600', color: '#fdf8f2', letterSpacing: '-0.04em' },
+    navLabel: { fontSize: '10px', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', letterSpacing: '0.07em', textTransform: 'uppercase', color: 'rgba(253,248,242,0.35)', marginBottom: '6px', padding: '0 8px', marginTop: '20px' },
+    navItem: { display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 10px', borderRadius: '6px', marginBottom: '2px', fontSize: '13px', color: 'rgba(253,248,242,0.65)', cursor: 'pointer' },
+    navItemActive: { display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 10px', borderRadius: '6px', marginBottom: '2px', fontSize: '13px', color: '#fdf8f2', fontWeight: '500', cursor: 'pointer', background: 'rgba(184,92,56,0.25)' },
+    navDot: { width: '6px', height: '6px', borderRadius: '50%', background: 'rgba(253,248,242,0.3)', flexShrink: 0 },
+    navDotActive: { width: '6px', height: '6px', borderRadius: '50%', background: '#b85c38', flexShrink: 0 },
+    sidebarBottom: { marginTop: 'auto' },
+    userPill: { display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', background: 'rgba(253,248,242,0.06)' },
+    avatar: { width: '30px', height: '30px', borderRadius: '50%', background: '#b85c38', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '600', color: 'white', flexShrink: 0 },
+    userName: { fontSize: '12px', fontWeight: '500', color: '#fdf8f2' },
+    userEmail: { fontSize: '10px', color: 'rgba(253,248,242,0.4)', fontFamily: "'JetBrains Mono', monospace" },
+    logoutBtn: { background: 'none', border: 'none', color: 'rgba(253,248,242,0.4)', fontSize: '11px', cursor: 'pointer', fontFamily: 'inherit', marginTop: '8px', padding: '0 10px', textAlign: 'left' },
+    main: { marginLeft: '220px', flex: 1, padding: '36px 40px' },
+    topbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' },
+    pageTitle: { fontSize: '22px', fontWeight: '600', color: '#1a2744', letterSpacing: '-0.025em' },
+    pageSub: { fontSize: '13px', color: '#7a6a5a', marginTop: '2px' },
+    semBadge: { fontSize: '11px', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', letterSpacing: '0.04em', padding: '5px 10px', background: '#f5edd8', border: '0.5px solid #d4c4a8', borderRadius: '4px', color: '#7a6a5a', marginRight: '10px' },
+    btnGenerate: { background: '#b85c38', color: '#fdf8f2', border: 'none', borderRadius: '4px', padding: '9px 16px', fontSize: '13px', fontWeight: '500', cursor: 'pointer', fontFamily: 'inherit' },
+    statsRow: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px', marginBottom: '28px' },
+    statCard: { background: '#f5edd8', borderRadius: '8px', padding: '16px 18px', border: '0.5px solid #d4c4a8' },
+    statLabel: { fontSize: '10px', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#7a6a5a', marginBottom: '8px' },
+    statValue: { fontSize: '26px', fontWeight: '600', color: '#1a2744', letterSpacing: '-0.03em' },
+    statDelta: { fontSize: '11px', fontFamily: "'JetBrains Mono', monospace", color: '#b85c38', marginTop: '4px' },
+    grid: { display: 'grid', gridTemplateColumns: '1fr 320px', gap: '20px' },
+    card: { background: '#f5edd8', borderRadius: '10px', border: '0.5px solid #d4c4a8', overflow: 'hidden' },
+    cardHeader: { padding: '16px 20px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '0.5px solid #d4c4a8' },
+    cardTitle: { fontSize: '14px', fontWeight: '500', color: '#1a2744', letterSpacing: '-0.01em' },
+    cardAction: { fontSize: '12px', color: '#b85c38', cursor: 'pointer' },
+    moduleRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '13px 20px', borderBottom: '0.5px solid #d4c4a8' },
+    moduleLeft: { display: 'flex', alignItems: 'center', gap: '12px' },
+    colorBar: (color) => ({ width: '3px', height: '36px', borderRadius: '2px', flexShrink: 0, background: color }),
+    moduleCode: { fontSize: '12px', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', color: '#3d5a73' },
+    moduleName: { fontSize: '13px', fontWeight: '500', color: '#1f1a16' },
+    moduleMeta: { fontSize: '11px', fontFamily: "'JetBrains Mono', monospace", color: '#7a6a5a', marginTop: '1px' },
+    mcBadge: { fontSize: '11px', fontFamily: "'JetBrains Mono', monospace", fontWeight: '600', padding: '3px 8px', borderRadius: '3px', background: 'rgba(26,39,68,0.08)', color: '#1a2744' },
+    rightCol: { display: 'flex', flexDirection: 'column', gap: '16px' },
+    progressWrap: { padding: '16px 20px' },
+    progressLabel: { display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#7a6a5a', marginBottom: '8px' },
+    progressTrack: { height: '6px', background: '#ede4cc', borderRadius: '3px', overflow: 'hidden', marginBottom: '14px' },
+    progressFill: (w, color) => ({ height: '100%', borderRadius: '3px', background: color || '#b85c38', width: w }),
+    quickItem: { padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '0.5px solid #d4c4a8' },
+    quickLabel: { fontSize: '13px', color: '#1f1a16' },
+    quickVal: { fontSize: '12px', fontFamily: "'JetBrains Mono', monospace", color: '#7a6a5a' },
+}
+
+const modules = [
+    { code: 'CS3230', name: 'Design and Analysis of Algorithms', meta: 'Tue 10–12 · Thu 10–12 · Exam: 28 Nov', color: '#b85c38', mc: '4 MC' },
+    { code: 'CS3219', name: 'Software Engineering Principles', meta: 'Mon 14–16 · Wed 14–16 · No exam', color: '#1a2744', mc: '4 MC' },
+    { code: 'ST2334', name: 'Probability and Statistics', meta: 'Wed 10–12 · Fri 10–11 · Exam: 4 Dec', color: '#3d5a73', mc: '4 MC' },
+    { code: 'GEA1000', name: 'Quantitative Reasoning with Data', meta: 'Thu 14–16 · S/U eligible', color: '#7a6a5a', mc: '4 MC' },
+    { code: 'CS2103T', name: 'Software Engineering', meta: 'Fri 14–16 · Project-based · No exam', color: '#c9a84c', mc: '4 MC' },
+]
 
 function Dashboard() {
     const navigate = useNavigate()
+    const [userEmail, setUserEmail] = useState('')
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        if (!token) {
-            navigate('/login')
-        }
+
+        if (!token) { navigate('/login'); return }
+        const stored = localStorage.getItem('userEmail')
+        if (stored) setUserEmail(stored)
     }, [navigate])
 
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
+
+    const initials = userEmail ? userEmail.slice(0, 2).toUpperCase() : 'MM'
+
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <p>Welcome, you are logged in.</p>
+        <div style={s.page}>
+            <div style={s.sidebar}>
+                <div style={s.logoRow}>
+                    <div style={s.logoIcon}>
+                        <div style={s.sq1}></div><div style={s.sq2}></div>
+                        <div style={s.sq3}></div><div style={s.sq4}></div>
+                    </div>
+                    <span style={s.wordmark}>ModMapper</span>
+                </div>
+
+                <div style={s.navLabel}>Plan</div>
+                <div style={s.navItemActive}><div style={s.navDotActive}></div>Dashboard</div>
+                <div style={s.navItem}><div style={s.navDot}></div>Timetable</div>
+                <div style={s.navItem}><div style={s.navDot}></div>4-Year Planner</div>
+
+                <div style={s.navLabel}>Explore</div>
+                <div style={s.navItem}><div style={s.navDot}></div>Module Search</div>
+                <div style={s.navItem}><div style={s.navDot}></div>UE Recommender</div>
+                <div style={s.navItem}><div style={s.navDot}></div>Q&A Community</div>
+
+                <div style={s.navLabel}>Tools</div>
+                <div style={s.navItem}><div style={s.navDot}></div>S/U Optimiser</div>
+                <div style={s.navItem}><div style={s.navDot}></div>Group Finder</div>
+
+                <div style={s.sidebarBottom}>
+                    <div style={s.userPill}>
+                        <div style={s.avatar}>{initials}</div>
+                        <div>
+                            <div style={s.userName}>My Account</div>
+                            <div style={s.userEmail}>{userEmail || 'NUS Student'}</div>
+                        </div>
+                    </div>
+                    <button style={s.logoutBtn} onClick={handleLogout}>Sign out</button>
+                </div>
+            </div>
+
+            <div style={s.main}>
+                <div style={s.topbar}>
+                    <div>
+                        <div style={s.pageTitle}>Welcome back</div>
+                        <div style={s.pageSub}>Here's where your academic plan stands</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <span style={s.semBadge}>AY2526 · SEM 1</span>
+                        <button style={s.btnGenerate}>Generate Plan →</button>
+                    </div>
+                </div>
+
+                <div style={s.statsRow}>
+                    {[
+                        { label: 'MCs Completed', value: '60', unit: 'mc', delta: '↑ 20mc this sem' },
+                        { label: 'Current CAP', value: '4.2', unit: '', delta: '↑ 0.1 from last sem' },
+                        { label: 'Semesters Left', value: '6', unit: 'sem', delta: 'On track to graduate' },
+                        { label: 'MCs This Sem', value: '20', unit: 'mc', delta: '5 modules enrolled' },
+                    ].map((stat) => (
+                        <div key={stat.label} style={s.statCard}>
+                            <div style={s.statLabel}>{stat.label}</div>
+                            <div style={s.statValue}>{stat.value}<span style={{ fontSize: '13px', fontWeight: '400', color: '#7a6a5a', marginLeft: '3px' }}>{stat.unit}</span></div>
+                            <div style={s.statDelta}>{stat.delta}</div>
+                        </div>
+                    ))}
+                </div>
+
+                <div style={s.grid}>
+                    <div style={s.card}>
+                        <div style={s.cardHeader}>
+                            <div style={s.cardTitle}>This Semester's Modules</div>
+                            <div style={s.cardAction}>View timetable →</div>
+                        </div>
+                        {modules.map((m) => (
+                            <div key={m.code} style={s.moduleRow}>
+                                <div style={s.moduleLeft}>
+                                    <div style={s.colorBar(m.color)}></div>
+                                    <div>
+                                        <div style={s.moduleCode}>{m.code}</div>
+                                        <div style={s.moduleName}>{m.name}</div>
+                                        <div style={s.moduleMeta}>{m.meta}</div>
+                                    </div>
+                                </div>
+                                <span style={s.mcBadge}>{m.mc}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={s.rightCol}>
+                        <div style={s.card}>
+                            <div style={s.cardHeader}><div style={s.cardTitle}>Graduation Progress</div></div>
+                            <div style={s.progressWrap}>
+                                {[
+                                    { label: 'Total MCs', val: '60 / 160', w: '37.5%', color: '#b85c38' },
+                                    { label: 'Core Modules', val: '18 / 36', w: '50%', color: '#1a2744' },
+                                    { label: 'GE Modules', val: '4 / 20', w: '20%', color: '#3d5a73' },
+                                ].map((p) => (
+                                    <div key={p.label}>
+                                        <div style={s.progressLabel}><span>{p.label}</span><span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px' }}>{p.val}</span></div>
+                                        <div style={s.progressTrack}><div style={s.progressFill(p.w, p.color)}></div></div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div style={s.card}>
+                            <div style={s.cardHeader}><div style={s.cardTitle}>Quick Info</div></div>
+                            {[
+                                { label: 'Major', val: 'Computer Science' },
+                                { label: 'Year / Sem', val: 'Y2 · S1' },
+                                { label: 'S/U remaining', val: '12 MC left' },
+                                { label: 'Next milestone', val: 'Exam: 28 Nov' },
+                            ].map((item) => (
+                                <div key={item.label} style={{ ...s.quickItem, borderBottom: '0.5px solid #d4c4a8' }}>
+                                    <div style={s.quickLabel}>{item.label}</div>
+                                    <div style={s.quickVal}>{item.val}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
