@@ -1,0 +1,34 @@
+name: Lint Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Server
+      - name: Install Server Dependencies
+        working-directory: ./server
+        run: npm install
+
+      - name: Lint Server
+        working-directory: ./server
+        run: npm run lint
+
+      # Client
+      - name: Install Client Dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: Lint Client
+        working-directory: ./client
+        run: npm run lint
