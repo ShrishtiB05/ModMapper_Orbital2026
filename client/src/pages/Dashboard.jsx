@@ -69,10 +69,12 @@ function Dashboard() {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
+
         if (!token) { navigate('/login'); return }
         const stored = localStorage.getItem('userEmail')
         if (stored) setUserEmail(stored)
-    }, [])
+    }, [navigate])
+
 
     const handleLogout = () => {
         localStorage.removeItem('token')
