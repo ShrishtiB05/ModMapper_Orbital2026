@@ -9,7 +9,7 @@ function Dashboard() {
         if (!token) {
             navigate('/login')
         }
-    }, [])
+    }, [navigate])
 
     return (
         <div>
