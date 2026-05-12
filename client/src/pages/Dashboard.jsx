@@ -65,14 +65,11 @@ const modules = [
 
 function Dashboard() {
     const navigate = useNavigate()
-    const [userEmail, setUserEmail] = useState('')
+    const [userEmail] = useState(() => localStorage.getItem('userEmail') || '')
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-
-        if (!token) { navigate('/login'); return }
-        const stored = localStorage.getItem('userEmail')
-        if (stored) setUserEmail(stored)
+        if (!token) { navigate('/login') }
     }, [navigate])
 
 
