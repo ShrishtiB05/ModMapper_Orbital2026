@@ -36,6 +36,32 @@ const s = {
     backBtn: { background: 'none', border: 'none', color: '#3d5a73', fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit', marginTop: '14px', display: 'block' }
 }
 
+const LeftPanel = () => (
+    <div style={s.left}>
+        <div style={s.logoRow}>
+            <div style={s.logoIcon}>
+                <div style={s.sq1}></div><div style={s.sq2}></div>
+                <div style={s.sq3}></div><div style={s.sq4}></div>
+            </div>
+            <span style={s.wordmark}>ModMapper</span>
+        </div>
+        <div style={s.leftBody}>
+            <div style={s.headline}>
+                Plan your degree.<br />
+                <span style={s.headlineAccent}>Map your future.</span>
+            </div>
+            <div style={s.subtext}>
+                The intelligent NUS academic co-pilot that turns semester planning from a four-hour headache into a two-minute conversation.
+            </div>
+        </div>
+        <div style={s.statsRow}>
+            <div><div style={s.statNum}>4 yrs</div><div style={s.statLabel}>Full roadmap</div></div>
+            <div><div style={s.statNum}>&lt;2 min</div><div style={s.statLabel}>To your timetable</div></div>
+            <div><div style={s.statNum}>NUS</div><div style={s.statLabel}>Built for you</div></div>
+        </div>
+    </div>
+)
+
 function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -73,32 +99,6 @@ function Login() {
             setMessage(data.error)
         }
     }
-
-    const LeftPanel = () => (
-        <div style={s.left}>
-            <div style={s.logoRow}>
-                <div style={s.logoIcon}>
-                    <div style={s.sq1}></div><div style={s.sq2}></div>
-                    <div style={s.sq3}></div><div style={s.sq4}></div>
-                </div>
-                <span style={s.wordmark}>ModMapper</span>
-            </div>
-            <div style={s.leftBody}>
-                <div style={s.headline}>
-                    Plan your degree.<br />
-                    <span style={s.headlineAccent}>Map your future.</span>
-                </div>
-                <div style={s.subtext}>
-                    The intelligent NUS academic co-pilot that turns semester planning from a four-hour headache into a two-minute conversation.
-                </div>
-            </div>
-            <div style={s.statsRow}>
-                <div><div style={s.statNum}>4 yrs</div><div style={s.statLabel}>Full roadmap</div></div>
-                <div><div style={s.statNum}>&lt;2 min</div><div style={s.statLabel}>To your timetable</div></div>
-                <div><div style={s.statNum}>NUS</div><div style={s.statLabel}>Built for you</div></div>
-            </div>
-        </div>
-    )
 
     if (showForgotPassword) {
         return (
