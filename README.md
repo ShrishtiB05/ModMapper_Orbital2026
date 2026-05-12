@@ -104,7 +104,7 @@ Authentication is fully functional — users can register and log in via Supabas
 
 ## Deployment
 
-| | Platform | URL |
+| | Platform |
 |---|---|---|
 | Frontend | Vercel |
 | Backend | Railway |
