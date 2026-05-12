@@ -106,9 +106,9 @@ Authentication is fully functional — users can register and log in via Supabas
 
 | | Platform | URL |
 |---|---|---|
-| Frontend | Vercel | [modmapper.vercel.app](https://modmapper.vercel.app/login) |
-| Backend | Railway | — |
-| Database | Supabase | Asia-Pacific region |
+| Frontend | Vercel |
+| Backend | Railway |
+| Database | Supabase |
 
 ---
 
