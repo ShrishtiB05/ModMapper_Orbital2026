@@ -105,10 +105,10 @@ Authentication is fully functional — users can register and log in via Supabas
 ## Deployment
 
 | | Platform |
-|---|---|---|
+|---|---|
 | Frontend | Vercel |
 | Backend | Railway |
-| Database | Supabase |
+| Database | Supabase (Asia-Pacific) |
 
 ---
 
