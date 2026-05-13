@@ -10,11 +10,38 @@ A collaborative timetable planner for NUS students. Search modules, build confli
 
 ## Features
 
-- Module search powered by the NUSMods API
-- Constraint-based timetable generation that avoids clashes automatically
-- Real-time collaboration — plan with friends simultaneously
-- AI-powered module recommendations via Claude
-- Interactive timetable visualisation built with D3.js
+- AI-Powered Timetable Generator
+Parses natural-language preferences like "no morning classes" into constraints using the Claude API. Generates and ranks valid, non-clashing schedules with a visual side-by-side comparison.
+
+- 4-Year Academic Planner
+Maps out your entire degree using a curated graduation requirement database and prerequisite logic. Features a drag-and-drop grid that prevents invalid module placements across semesters.
+
+- Crowdsourced Bidding Demand Heatmap
+Visualizes anonymous, real-time planning intent from other users as a color-coded timetable overlay. Helps you gauge competition for specific slots before the actual bidding window opens.
+
+- S/U Optimizer with AI Explanation
+Identifies S/U-eligible modules and uses historical difficulty data to recommend the best grade-masking strategy. Provides plain-English reasoning on how each choice impacts your target CAP.
+
+- Planner-Gated Module Q&A
+Provides a persistent, searchable community forum where posting access is restricted to current or past students. Ensures high-quality, verified peer advice that survives beyond ephemeral chat groups.
+
+- Peer-Informed UE/PE Recommender
+Matches your interests to modules using AI, enriched with major-specific workload and enjoyment scores. Allows instant "Add to Planner" functionality with automated prerequisite checks.
+
+- Group Free Slot Finder
+Aggregates friend schedules via shareable links to identify optimal meeting windows for project work. Displays the nearest classes for each person to provide geographic and temporal context.
+
+- AI Study Planner
+Automatically wraps a weekly revision schedule around your timetable based on module weightage and exam dates. Learns from your behavior, adjusting future suggestions when you skip or complete blocks.
+
+- Interactive Prerequisite Visualizer
+Uses a D3.js force-directed graph to map out your entire degree's dependency tree. Highlights double-counting opportunities and color-codes modules by completion and eligibility status.
+
+- AI Workload Balancer & Danger Zones
+Identifies "danger zones" where deadlines and exams cluster to predict your weekly stress levels. Suggests module swaps to smooth out your semester load and calculates downstream impacts.
+
+- What-If Scenario Planner
+Enables side-by-side comparisons of major pivots, such as adding a second major or going on exchange. Evaluates feasibility, graduation timelines, and workload differences across different "what-if" branches.
 
 ---
 
