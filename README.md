@@ -8,7 +8,7 @@ A collaborative timetable planner for NUS students. Search modules, build confli
 
 ---
 
-## Features
+## Upcoming Features
 
 - AI-Powered Timetable Generator -> 
 Parses natural-language preferences like "no morning classes" into constraints using the Claude API. Generates and ranks valid, non-clashing schedules with a visual side-by-side comparison.
