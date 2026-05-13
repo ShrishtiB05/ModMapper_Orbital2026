@@ -25,7 +25,6 @@ A collaborative timetable planner for NUS students. Search modules, build confli
 | Frontend | React, Vite, D3.js |
 | Backend | Node.js, Express |
 | Database | PostgreSQL (Supabase) |
-| AI | Claude API (Anthropic) |
 | CI | GitHub Actions, ESLint |
 
 ---
