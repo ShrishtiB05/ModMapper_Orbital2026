@@ -97,7 +97,7 @@ function Dashboard() {
                 <div style={s.navItem}><div style={s.navDot}></div>4-Year Planner</div>
 
                 <div style={s.navLabel}>Explore</div>
-                <div style={s.navItem}><div style={s.navDot}></div>Module Search</div>
+                <div style={s.navItem} onClick={() => navigate('/modules')}><div style={s.navDot}></div>Module Search</div>
                 <div style={s.navItem}><div style={s.navDot}></div>UE Recommender</div>
                 <div style={s.navItem}><div style={s.navDot}></div>Q&A Community</div>
 
