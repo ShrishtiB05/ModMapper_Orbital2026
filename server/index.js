@@ -2,12 +2,14 @@ const cors = require('cors')
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const supabase = require('./supabase');
+const supabase = require('./db/supabase');
 const authRouter = require('./routes/auth');
+const modulesRouter = require('./routes/modules');
 
 app.use(express.json());
 app.use(cors({ origin: '*' }))
 app.use('/auth', authRouter);
+app.use('/modules', modulesRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
