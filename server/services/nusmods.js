@@ -1,16 +1,19 @@
 function moduleGetData (moduleCode) {
-    const url = `https://api.nusmods.com/v2/2024-2025/modules/${moduleCode}.json`;
-    return fetch(url)
-        .then(response => {
+
+    const year = new Date().getFullYear();
+    const url = `https://api.nusmods.com/v2/${year}-${year+1}/modules/${moduleCode}.json`;
+    return async () => {
+        try {
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();
-        })
-        .catch(error => {
+            return await response.json();
+        } catch (error) {
             console.error('Error fetching module data:', error);
             throw error;
-        });
+        }
+    };
 }
 
 module.exports = {
