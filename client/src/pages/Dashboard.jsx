@@ -93,7 +93,7 @@ function Dashboard() {
 
                 <div style={s.navLabel}>Plan</div>
                 <div style={s.navItemActive}><div style={s.navDotActive}></div>Dashboard</div>
-                <div style={s.navItem}><div style={s.navDot}></div>Timetable</div>
+                <div style={s.navItem} onClick={() => navigate('/timetable')}><div style={s.navDot}></div>Timetable</div>
                 <div style={s.navItem}><div style={s.navDot}></div>4-Year Planner</div>
 
                 <div style={s.navLabel}>Explore</div>
