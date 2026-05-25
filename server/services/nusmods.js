@@ -13,7 +13,7 @@ async function moduleGetData (moduleCode) {
         const url_current_year = `https://api.nusmods.com/v2/${year-1}-${year}/modules/${moduleCode}.json`;
         const response = await fetch(url_current_year);
         if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`, { cause: error });
+            throw new Error(`HTTP error! status: ${response.status}`, { cause: error });
         }
         return await response.json();
     }
@@ -33,7 +33,7 @@ async function getAllModules() {
         const url_current_year = `https://api.nusmods.com/v2/${year-1}-${year}/moduleList.json`;
         const response = await fetch(url_current_year);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`, { cause: error });
         }
         return await response.json();
     }
