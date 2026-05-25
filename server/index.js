@@ -6,11 +6,13 @@ const supabase = require('./db/supabase');
 const authRouter = require('./routes/auth');
 const modulesRouter = require('./routes/modules');
 const cron = require('./services/cron');
+const timetableRouter = require('./routes/timetable');
 
 app.use(express.json());
 app.use(cors({ origin: '*' }))
 app.use('/auth', authRouter);
 app.use('/modules', modulesRouter);
+app.use('/timetable', timetableRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
