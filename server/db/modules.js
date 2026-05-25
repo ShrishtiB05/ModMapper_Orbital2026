@@ -5,10 +5,15 @@ function getModuleByCode(moduleCode) {
 }
 
 function upsertModule(moduleData) {
-    return supabase.from('modules').upsert(moduleData);
+    return supabase.from('modules').upsert(moduleData, { onConflict: 'module_code' });
+}
+
+function getAllModules() {
+    return supabase.from('modules').select();
 }
 
 module.exports = {
     getModuleByCode,
-    upsertModule
+    upsertModule,
+    getAllModules
 };

@@ -4,13 +4,13 @@
     const supabase = require('../db/supabase');
 
     router.get('/', async (req, res) => {
-        const [bearer, token] = req.headers.authorization.split(' ');
+        const token = req.headers.authorization.split(' ')[1];
         
         if (!token) {
             return res.status(401).json({ error: 'Unauthorized 1' });
         }
         
-        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+        const { data: { user }} = await supabase.auth.getUser(token);
         const userID = user.id;
         
         if(!userID) {
@@ -30,13 +30,13 @@
     })
 
     router.post('/', async (req, res) => {
-        const [bearer, token] = req.headers.authorization.split(' ');
+        const token = req.headers.authorization.split(' ')[1];
         
         if (!token) {
             return res.status(401).json({ error: 'Unauthorized 3' });
         }
         
-        const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+        const { data: { user }} = await supabase.auth.getUser(token);
         const userID = user.id;
         
         if(!userID) {
