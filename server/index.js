@@ -5,7 +5,7 @@ const PORT = 3000;
 const supabase = require('./db/supabase');
 const authRouter = require('./routes/auth');
 const modulesRouter = require('./routes/modules');
-const cron = require('./services/cron');
+require('./services/cron');
 const timetableRouter = require('./routes/timetable');
 
 app.use(express.json());
