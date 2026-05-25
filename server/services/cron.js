@@ -1,0 +1,20 @@
+const refresh = require('./refresh');
+const cron = require('node-cron');
+
+console.log('Running initial module refresh on startup');
+refresh.refreshModules();
+
+cron.schedule('0 2 * * *', () => {
+    const date = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    if ((date >= 15 && month === 7) || (date <= 25 && month === 8)
+    || (date >= 15 && month === 12) || (date <= 25 && month === 1)) {
+        console.log('Running daily module refresh at 2 AM');
+        refresh.refreshModules();
+    } else if (date === 1) {
+        console.log('Running daily module refresh at 2 AM');
+        refresh.refreshModules();
+    }
+});
+
+console.log('Cron job for daily module refresh has been set up');  

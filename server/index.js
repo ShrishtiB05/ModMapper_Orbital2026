@@ -5,6 +5,7 @@ const PORT = 3000;
 const supabase = require('./db/supabase');
 const authRouter = require('./routes/auth');
 const modulesRouter = require('./routes/modules');
+const cron = require('./services/cron');
 
 app.use(express.json());
 app.use(cors({ origin: '*' }))
