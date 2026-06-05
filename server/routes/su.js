@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
 const suPolicy = require('../db/suPolicy');
-const userProfileDB = require('../db/userProfile');
 const timetableDB = require('../db/timetable');
 const userSuInfoDB = require('../db/userSuInfo');
 const moduleDB = require('../db/modules');
+const userSemDB = require('../db/userSem');
+const userProfileDB = require('../db/userProfile');
 
 router.get('/', async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
@@ -23,41 +24,23 @@ router.get('/', async (req, res) => {
         }
 
         req.user = userID;
-
-        const matricYear = (await userProfileDB.getUserProfile(userID)).matric_year;
-        const year = new Date().getFullYear();
-        const month = new Date().getMonth() + 1; 
-        const temp = year - matricYear;
-        let whichYear = 1;
-        if(temp === 0) {
-            whichYear = 1;
-        } else if(temp === 1) {
-            if(month >= 7) {
-                whichYear = 2;
-            } else {
-                whichYear = 1;
-            }
-        } else if(temp === 2) {
-            if(month >= 7) {
-                whichYear = 3;
-            } else {
-                whichYear = 2;
-            }
-        } else if(temp === 3) {
-            if(month >= 7) {
-                whichYear = 4;
-            } else {
-                whichYear = 3;
-            }
+        let matricYear = 1;
+        const sem = await userSemDB.getUserSemByUserID(userID);
+        if (sem <=2) {
+            matricYear = 1;
+        } else if (sem <=4) {
+            matricYear = 2;
+        } else if (sem <=6) {
+            matricYear = 3;
         } else {
-            whichYear = 4;
+            matricYear = 4;
         }
         
         const suPolicyData = await suPolicy.getSuPolicy(matricYear);
         const userSuInfoData = await userSuInfoDB.getSuInfo(userID);
 
-        const groupCap = whichYear <= 2 ? suPolicyData.y1y2_cap : suPolicyData.y3y4_cap;
-        const currentGroup = whichYear <= 2 ? 'y1y2' : 'y3y4'; 
+        const groupCap = matricYear <= 2 ? suPolicyData.y1y2_cap : suPolicyData.y3y4_cap;
+        const currentGroup = matricYear <= 2 ? 'y1y2' : 'y3y4'; 
 
         const usedSu = userSuInfoData?.used_su ?? 0;
         const totalSu = userSuInfoData?.total_su ?? suPolicyData.total_su;
