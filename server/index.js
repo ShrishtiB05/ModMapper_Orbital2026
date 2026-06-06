@@ -9,6 +9,7 @@ require('./services/cron');
 require('./services/heatMapUpdate');
 const timetableRouter = require('./routes/timetable');
 const suRouter = require('./routes/su');
+const heatMapGetRouter = require('./routes/heatMap');
 
 app.use(express.json());
 app.use(cors({ origin: '*' }))
@@ -16,6 +17,7 @@ app.use('/auth', authRouter);
 app.use('/modules', modulesRouter);
 app.use('/timetable', timetableRouter);
 app.use('/su', suRouter);
+app.use('/heatmap', heatMapGetRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
