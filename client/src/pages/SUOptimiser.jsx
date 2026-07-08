@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Grade to grade point mapping (NUS grading scheme)
@@ -143,12 +143,6 @@ function SUOptimiser() {
     const navigate = useNavigate()
     const [userEmail] = useState(() => localStorage.getItem('userEmail') || '')
     const [modules, setModules] = useState([blankRow(), blankRow(), blankRow()])
-
-    // Auth guard
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (!token) navigate('/login')
-    }, [navigate])
 
     // Row helpers 
     const updateRow = (id, field, value) =>
