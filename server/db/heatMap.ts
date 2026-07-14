@@ -1,49 +1,37 @@
 import supabase from './supabase';
 import { getTimetableBySemNumber } from './timetable';
 import { getUserSemByUserID } from './userSem';
+import { currentAcademicSemester } from '../domain/calendar/currentAcaSem';
 
 export async function needToUpdateSlotDemand(moduleCode: string) {
-    const ifModuleExists = await supabase
+    const { data: existing, error } = await supabase
         .from('slot_demand')
-        .select('module_code')
+        .select('computed_at')
         .eq('module_code', moduleCode);
 
-    if (ifModuleExists.error) {
-        throw new Error(`Error fetching timetable: ${ifModuleExists.error.message}`);
+    if (error) {
+        throw new Error(`Error fetching slot demand: ${error.message}`);
     }
 
-    let needToUpdate = false;
+    let needToUpdate = existing.length === 0;
 
-    if (ifModuleExists.data.length > 0) {
-        const slotDemandTimeStamp = await supabase
-            .from('slot_demand')
-            .select('computed_at')
-            .eq('module_code', moduleCode)
-            .limit(1);
-
-        if (slotDemandTimeStamp.error) {
-            throw new Error(`Error fetching timetable: ${slotDemandTimeStamp.error.message}`);
-        }
-
-        const moduleCachedTimeStamp = await supabase
+    if (!needToUpdate) {
+        const { data: moduleData, error: moduleError } = await supabase
             .from('modules')
             .select('cached_at')
             .eq('module_code', moduleCode)
             .single();
 
-        if (moduleCachedTimeStamp.error) {
-            throw new Error(`Error fetching timetable: ${moduleCachedTimeStamp.error.message}`);
+        if (moduleError) {
+            throw new Error(`Error fetching timetable: ${moduleError.message}`);
         }
 
-        if (slotDemandTimeStamp.data[0].computed_at < moduleCachedTimeStamp.data.cached_at) {
+        if (existing[0].computed_at < moduleData.cached_at) {
             needToUpdate = true;
         }
     }
 
-    const month = new Date().getMonth() + 1;
-    const beforeMay = month < 5;
-
-    if (ifModuleExists.data.length === 0 || needToUpdate) {
+    if (existing.length === 0 || needToUpdate) {
         const academicYearData = await supabase
             .from('modules')
             .select('semesters')
@@ -54,12 +42,7 @@ export async function needToUpdateSlotDemand(moduleCode: string) {
             throw new Error(`Error fetching timetable: ${academicYearData.error.message}`);
         }
 
-        let whichSem = 1;
-
-        if (beforeMay) {
-            whichSem = 2;
-        }
-
+        const whichSem = currentAcademicSemester();
         const semData = academicYearData.data.semesters.find((s: any) => s.semester === whichSem);
 
         if (!semData) {
